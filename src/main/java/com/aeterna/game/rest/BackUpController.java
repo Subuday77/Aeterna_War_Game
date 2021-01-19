@@ -22,4 +22,21 @@ public class BackUpController {
     public ResponseEntity<?> restore () {
         return manipulations.restoreState();
     }
+    @GetMapping("/create")
+    public ResponseEntity<?> createSaveFile(){
+        return manipulations.createFile();
+    }
+    @GetMapping("/check")
+    public ResponseEntity<?> checkForOldGame(){
+        return manipulations.checkForOldGame();
+    }
+    @GetMapping("/lastline")
+    public ResponseEntity<?> getLastLine(){
+        return manipulations.lastLine();
+    }
+    @GetMapping("/newgame")
+    public ResponseEntity<?> makeNewFile(){
+        return manipulations.makeNewFile();
+    }
+
 }

@@ -8,14 +8,14 @@ import java.util.ArrayList;
 public class County {
     private String id;
     private String owner;
-    private boolean isCastle;
+    public boolean isCastle;
     private ArrayList<Unit> army;
     private ArrayList<String> neighbors;
 
     public County() {
     }
 
-    public County(String id,  String owner, boolean isCastle, ArrayList<Unit> army, ArrayList<String> neighbors) {
+    public County(String id, String owner, boolean isCastle, ArrayList<Unit> army, ArrayList<String> neighbors) {
         this.id = id;
         this.owner = owner;
         this.isCastle = isCastle;
@@ -39,13 +39,13 @@ public class County {
         this.owner = owner;
     }
 
-    public boolean isCastle() {
-        return isCastle;
-    }
-
-    public void setCastle(boolean castle) {
-        isCastle = castle;
-    }
+//    public boolean isCastle() {
+//        return isCastle;
+//    }
+//
+//    public void setCastle(boolean castle) {
+//        this.isCastle = castle;
+//    }
 
     public ArrayList<Unit> getArmy() {
         return army;
@@ -63,8 +63,8 @@ public class County {
         this.neighbors = neighbors;
     }
 
-    public void setCanonicName() {
-    }
+   // public void setCanonicName() {
+  //  }
 
     @Override
     public String toString() {

@@ -11,8 +11,8 @@ public class Unit {
     private int hp;
     private int numberOfSteps;
     private int damage;
-    private boolean isInUse;
-    private boolean isSupport;
+    public boolean isInUse;
+    public boolean isSupport;
 
     public Unit() {
     }
@@ -85,21 +85,21 @@ public class Unit {
         this.damage = damage;
     }
 
-    public boolean isInUse() {
-        return isInUse;
-    }
-
-    public void setInUse(boolean inUse) {
-        isInUse = inUse;
-    }
-
-    public boolean isSupport() {
-        return isSupport;
-    }
-
-    public void setSupport(boolean support) {
-        isSupport = support;
-    }
+//    public boolean isInUse() {
+//        return isInUse;
+//    }
+//
+//    public void setInUse(boolean inUse) {
+//        isInUse = inUse;
+//    }
+//
+//    public boolean isSupport() {
+//        return isSupport;
+//    }
+//
+//    public void setSupport(boolean support) {
+//        isSupport = support;
+//    }
 
     @Override
     public String toString() {
