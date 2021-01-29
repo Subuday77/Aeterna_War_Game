@@ -3,6 +3,7 @@ package com.aeterna.game.rest;
 import com.aeterna.game.actions.BackUpManipulations;
 import com.aeterna.game.beans.GlobalMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,4 +40,8 @@ public class BackUpController {
         return manipulations.makeNewFile();
     }
 
+    @GetMapping("/cnncheck")
+    public ResponseEntity<?> connectionCheck(){
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
 }
