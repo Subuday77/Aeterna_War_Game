@@ -33,7 +33,11 @@ public class BackUpController {
     }
     @GetMapping("/lastline")
     public ResponseEntity<?> getLastLine(){
-        return manipulations.lastLine();
+        return manipulations.lastLine(0);
+    }
+    @GetMapping("/defineprevstate")
+    public ResponseEntity<?> definePrevState(){
+        return manipulations.lastLine(1);
     }
     @GetMapping("/newgame")
     public ResponseEntity<?> makeNewFile(){

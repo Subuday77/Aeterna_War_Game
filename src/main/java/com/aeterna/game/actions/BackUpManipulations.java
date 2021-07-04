@@ -1,7 +1,9 @@
 package com.aeterna.game.actions;
 
 import com.aeterna.game.beans.BackupLine;
+import com.aeterna.game.beans.County;
 import com.aeterna.game.beans.GlobalMap;
+import com.aeterna.game.beans.Unit;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +37,8 @@ public class BackUpManipulations {
 
     @PostConstruct
     public ResponseEntity<?> createFile() {
-        if(!folder.exists()) {
-            if(folder.mkdir()) {
+        if (!folder.exists()) {
+            if (folder.mkdir()) {
                 System.out.println("Folder created.");
             } else {
                 System.out.println("Folder not created.");
@@ -61,7 +63,7 @@ public class BackUpManipulations {
         String turn = servletRequest.getHeader("turn");
         int stepNumber = servletRequest.getIntHeader("stepNumber");
         BackupLine backupLine = new BackupLine(turn, stepNumber, globalMap);
-        if (!gson.toJson(backupLine).equals(getLastLine())) {
+        if (!gson.toJson(backupLine).equals(getLastLine(0))) {
             try {
                 myWriter = new FileWriter(path, true);
                 myWriter.append(gson.toJson(backupLine) + "\n");
@@ -79,7 +81,7 @@ public class BackUpManipulations {
         if (countLines() > 1) {
             deleteLastLine();
         }
-        BackupLine backupLine = gson.fromJson(getLastLine(), BackupLine.class);
+        BackupLine backupLine = gson.fromJson(getLastLine(0), BackupLine.class);
         // System.out.println(backupLine);
         return new ResponseEntity<>(backupLine, HttpStatus.OK);
     }
@@ -88,8 +90,28 @@ public class BackUpManipulations {
         return new ResponseEntity<>(countLines() > 0, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> lastLine() {
-        BackupLine backupLine = gson.fromJson(getLastLine(), BackupLine.class);
+    public ResponseEntity<?> lastLine(int searchType) {
+        int countReduce = 0;
+        BackupLine backupLine = gson.fromJson(getLastLine(countReduce), BackupLine.class);
+        String activeUser = backupLine.getTurn();
+        if (searchType == 1) {
+            do {
+                backupLine = gson.fromJson(getLastLine(countReduce), BackupLine.class);
+                countReduce++;
+            } while (activeUser.equals(backupLine.getTurn()) && countLines() - countReduce > 0);
+            for (County county : backupLine.getGlobalMap().getCounties()) {
+                for (Unit unit : county.getArmy()) {
+                    if (!unit.getId().equals("None")) {
+                        if (!unit.getName().equals("Cavalry")) {
+                            unit.setNumberOfSteps(1);
+                        } else {
+                            unit.setNumberOfSteps(2);
+                        }
+                    }
+                }
+            }
+            return new ResponseEntity<>(backupLine, HttpStatus.OK);
+        }
         return new ResponseEntity<>(backupLine, HttpStatus.OK);
     }
 
@@ -108,9 +130,9 @@ public class BackUpManipulations {
         }
     }
 
-    private static String getLastLine() {
+    private static String getLastLine(int countReduce) {
         String res = "";
-        long limit = countLines();
+        long limit = countLines() - countReduce;
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             for (int i = 1; i <= limit; ++i) {
